@@ -40,6 +40,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, '/public')));
 
+app.get('/auth/google',
+  passport.authenticate('google', { scope: ['email', 'profile'] }));
+
+  app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/user/no-permission' }),
+  (req, res) => {
+    res.redirect('/user/logged');
+    
+  }
+);
+
 app.get('/', (req, res) => {
   res.render('index');
 });
